@@ -13,7 +13,6 @@ def BFS(m, row, col, visited,word):
     while queue:
         row, col = queue.popleft()
         puyo.append([row, col])
-        print(word, row, col, size)
         
         for i in range(4):
             if row + dy[i] >= 0 and row + dy[i] < 12 and col +dx[i] >= 0 and col + dx[i] < 6:
@@ -21,12 +20,23 @@ def BFS(m, row, col, visited,word):
                     size += 1
                     queue.append([row + dy[i], col + dx[i]])
                     visited[row + dy[i]][col + dx[i]] = True
-    print(word, size)
+    
     if size >= 4:
         return puyo
     else:  
         return
-
+def a(m):
+    for i in range(6):
+        swap = [11,i]
+        for j in range(11,-1,-1):
+            if m[j][i] != '.': # 문자를 발견했는데
+                if m[swap[0]][swap[1]] == '.': # 현재 저장된 좌표가 '.'을 저장하고 있다면 바꾼다.
+                    temp = m[swap[0]][swap[1]]
+                    m[swap[0]][swap[1]] = m[j][i]
+                    m[j][i] = temp
+                    swap = [swap[0] - 1,swap[1]]
+                else:                           
+                    swap = [swap[0] -1, swap[1]]
 
 def printMap(map):
     for m_ in map:
@@ -46,7 +56,7 @@ def getPuyoList():
                     pList = pList + result
     return pList
 
-def puyopuyo(pList):
+def puyopuyo(m,pList):
     for row, col in pList:
         m[row][col] = '.'
 
@@ -58,9 +68,8 @@ result = 0
 while True:
     puyoList = getPuyoList()
     if puyoList:
-        print(puyoList)
-        puyopuyo(puyoList)
-        printMap(m)
+        puyopuyo(m,puyoList)
+        a(m)
         result += 1
     else:
         break
