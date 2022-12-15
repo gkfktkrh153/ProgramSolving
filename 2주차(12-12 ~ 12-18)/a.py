@@ -6,19 +6,23 @@ def serch(current):
   print(f'{name[current]}에 도착했습니다.')
 
   select = []
-  for i in range(len(graph[current])):
-    if visited[i] == False and graph[current][i]: 
+  for i in range(len(graph[current])):   
+    if visited[i] == False and graph[current][i] != 0: #방문 X 이동할 수 없는 곳 제외
       select.append(i)
       
   if select == []:
     return
+    
+  while(True):
+    print('이동할 곳을 선택하십시오.(', end='')  
+    for i in range(len(select)):
+      print(f'{i + 1}. {name[select[i]]}',end=' ')
 
-  print('이동할 곳을 선택하십시오.(', end='')  
-  for i in range(len(select)):
-    print(f'{i + 1}. {name[select[i]]}',end=' ')
 
+    s = int(input(') ==>  ')) - 1
 
-  s = int(input(') ==>  ')) - 1  
+    if select[s] in select:
+      break
   next = select[s]
   time += graph[current][next]
   print('소모시간',graph[current][next])

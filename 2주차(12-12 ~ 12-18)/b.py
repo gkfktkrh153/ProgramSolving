@@ -1,58 +1,70 @@
-class Graph():
-    def __init__ (self, size):
-        self.SIZE = size
-        self.graph = [[0 for _ in range(size)] for _ in range(size)]
+from itertools import combinations
 
-G1 = None
-stack = []
-visitedAry = ['집', '신림역', '강남역', '서울역', '강남대역', '학교']
-집, 신림역, 강남역, 서울역, 강남대역, 학교 = 0, 1, 2, 3, 4, 5
+def segmentation(lst):
+    one, two = -1, -1
+    for i in range(1,N+1): 
+            if i in l: # 1구역 # 12
+                area[i] = 1
+                one = i # 2
+            else: #2구역 # 3456
+                area[i] = 2
+                two = i   # 6
+    return one, two
+     
+def DFS(start,areaNum):
+    visited[start] = True
 
-G1 = Graph(6)
-G1.graph[집][신림역] = 20; G1.graph[집][서울역] = 50
-G1.graph[신림역][집] = 20; G1.graph[신림역][강남역] = 20
-G1.graph[강남역][신림역] = 20; G1.graph[강남역][강남대역] = 50
-G1.graph[서울역][집] = 50; G1.graph[서울역][강남대역] = 60
-G1.graph[강남대역][강남역] = 50; G1.graph[강남대역][서울역] = 60; G1.graph[강남대역][학교] = 10
-G1.graph[학교][강남대역] = 10
+    for next in graph[start]: # start와 연결된 지점
+        if visited[next] == False and area[next] == areaNum: # 아직 방문하지 않았고, 탐색중인 지역구 일 때
+            DFS(next, areaNum)
+    
 
-print('집에서 학교 가는 전체 연결도')
-print(' ', end= ' ')
-for v in range(G1.SIZE):
-    print(visitedAry[v], end = ' ')
-print()
-for row in range(G1.SIZE):
-    print(visitedAry[row], end = ' ')
-    for col in range(G1.SIZE):
-        print(G1.graph[row][col], end = ' ')
-    print()
-print()
 
-#current = 0
-#stack.append(current)
-#visitedAry.append(current)
+N = int(input())
 
-print(visitedAry)
-while (len(stack) !=0):
-    next = None
-    for vertex in range(6):
-        if G1.graph[current][vertex] == 1:
-            if vertex in visitedAry:
-                pass
+population = list(map(int, input().split())) # 0 1 2 3 4 5
+population.insert(0, 0) #
+area = [0 for i in range(N+1)]
+visited = [False for i in range(N+1)]
+
+
+
+graph = [[] for i in range(N+1)]
+for i in range(1, N + 1):
+    lst = list(map(int, input().split()))
+    graph[i] = lst[1:]
+#print(graph)
+
+min = 100000000
+possible = False
+for i in range(1,N+1): # 1 ~ N
+    lst = list(combinations([num for num in range(1, N+1)],i)) # N C R    N C 2
+    for l in lst: # [[1,2],[1,3],[1,4],[1,5],[1,6]]
+        one, two = segmentation(l) # 구역할당 + 1구역원소, 2구역원소 하나씩 리턴
+        visited = [False for i in range(N+1)]
+        # one 2
+        # two 6
+        DFS(one, 1) # 1선거구 DFS
+        DFS(two, 2) # 2선거구 DFS
+        if visited.count(True) < N: #불가능한 방법
+            continue
+        #가능한 방법
+        possible = True
+
+        firstArea = 0 
+        secondArea = 0
+        for index in range(1,N+1):
+            if area[index] == 1:
+                firstArea += population[index]
             else:
-                next = vertex
-                break
+                secondArea += population[index]
+        if min > abs(firstArea - secondArea):
+            min = abs(firstArea - secondArea)
+        
+if possible == False:
+    print(-1)
+else:
+    print(min)
+        
 
-    if next != None:
-        current = next
-        stack.append(current)
-        visitedAry.append(current)
-    else:
-        current = stack.pop()
 
-print('방문 순서 -->', end = ' ')
-
-for i in visitedAry:
-    print(i, end= ' ')
-
-    #print(str(ord('집')+i), end = ' ')
