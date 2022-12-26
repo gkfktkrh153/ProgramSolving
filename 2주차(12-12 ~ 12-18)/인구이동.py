@@ -67,6 +67,7 @@ while(True):
   reLocation(l)
 
   result += 1
-  #print(m)
-
+  for a in m:
+    print(a)
+  print()
 print(result)
