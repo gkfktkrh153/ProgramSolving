@@ -14,7 +14,7 @@ while(queue):
     if visited[x + 1] == False:
       queue.append((x + 1, cnt + 1))
       visited[x + 1] = True
-  if x - 1 > 0:
+  if x - 1 >= 0:
     if visited[x - 1] == False:
       queue.append((x - 1, cnt + 1))
       visited[x - 1] = True
