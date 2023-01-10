@@ -1,32 +1,30 @@
-T = int(input())
-lst = []
-for i in range(T):
-  l = list(map(str, input()))
-  lst.append(l)
-print(lst)
+import sys
+
+
+N = int(sys.stdin.readline())
+lst = [sys.stdin.readline().rstrip() for _ in range(N)]
+
+maxlen = len(max(lst,key=len))
+for i,t in enumerate(lst):
+    lst[i] = t.zfill(maxlen)
+
+num = 9
+alpha = {}
+for i in range(maxlen):
+    for j, t in enumerate(lst):
+        if t[i].isalpha():
+            if t[i] not in alpha:
+                alpha[t[i]] = pow(10, maxlen-i-1)
+            else:
+                alpha[t[i]] += pow(10, maxlen-i-1)
+alpha = sorted(alpha.items(), key=lambda x: x[1], reverse=True)
+answer = 0
+for i, v in alpha:
+    answer += v*num
+    num-=1
+print(answer)
 
 
 
-used = {'A':False,'B':False,'C':False,'D':False,'E':False,'F':False,'G':False,'H':False,'I':False,'J':False
-,'K':False,'L':False,'M':False,'N':False,'O':False,'P':False,'Q':False,'R':False,'S':False,'T':False,'U':False }
-
-number = {'A':0,'B':0,'C':0,'D':0,'E':0,'F':0,'G':0,'H':0,'I':0,'J':0
-,'K':0,'L':0,'M':0,'N':0,'O':0,'P':0,'Q':0,'R':0,'S':0,'T':0,'U':0 }
-
-
-
-n = 9
-while(lst):
-  lst.sort(reverse=True)  
-  c = lst[0][0]
-  
-  if used[c] == False: # 가장 큰 자리수에 위치한 알파벳을 사용하지 않았다면
-    number[c] = n
-  lst[0].pop(0)
-
-print(number)
-
-
-    
 
 
