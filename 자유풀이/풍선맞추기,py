@@ -1,0 +1,18 @@
+import sys
+n = int(sys.stdin.readline())
+balloons = list(map(int, sys.stdin.readline().split()))
+
+arrow = [0 for i in range(1000001)]
+
+answer = 0
+for balloon in balloons:
+  if arrow[balloon] >= 1: # 풍선이 있는 라인에 화살이 있다면
+    arrow[balloon] -= 1
+    arrow[balloon - 1] += 1
+  else:
+    arrow[balloon - 1] += 1
+    answer += 1
+
+
+
+print(answer)
